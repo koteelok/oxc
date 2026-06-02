@@ -12,6 +12,7 @@ use crate::{
     ast_util::{is_function_node, iter_outer_expressions},
     context::LintContext,
     rule::{DefaultRuleConfig, Rule},
+    utils::number_as_object_schema,
 };
 
 fn max_nested_callbacks_diagnostic(num: usize, max: usize, span: Span) -> OxcDiagnostic {
@@ -32,6 +33,18 @@ const DEFAULT_MAX_NESTED_CALLBACKS: usize = 10;
 impl Default for MaxNestedCallbacks {
     fn default() -> Self {
         Self { max: DEFAULT_MAX_NESTED_CALLBACKS }
+    }
+}
+
+#[cfg(feature = "ruledocs")]
+impl MaxNestedCallbacks {
+    #[expect(clippy::unnecessary_wraps)]
+    pub fn config_schema(
+        r#gen: &mut schemars::r#gen::SchemaGenerator,
+    ) -> Option<schemars::schema::Schema> {
+        let mut schema = r#gen.subschema_for::<Self>();
+        number_as_object_schema(r#gen, &mut schema, None);
+        Some(schema)
     }
 }
 

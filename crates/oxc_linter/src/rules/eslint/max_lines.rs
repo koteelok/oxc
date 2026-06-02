@@ -8,7 +8,7 @@ use serde_json::Value;
 use crate::{
     context::LintContext,
     rule::{DefaultRuleConfig, Rule},
-    utils::count_comment_lines,
+    utils::{count_comment_lines, number_as_object_schema},
 };
 
 fn max_lines_diagnostic(count: usize, max: usize, span: Span) -> OxcDiagnostic {
@@ -42,6 +42,18 @@ impl std::ops::Deref for MaxLines {
 impl Default for MaxLinesConfig {
     fn default() -> Self {
         Self { max: 300, skip_blank_lines: false, skip_comments: false }
+    }
+}
+
+#[cfg(feature = "ruledocs")]
+impl MaxLines {
+    #[expect(clippy::unnecessary_wraps)]
+    pub fn config_schema(
+        r#gen: &mut schemars::r#gen::SchemaGenerator,
+    ) -> Option<schemars::schema::Schema> {
+        let mut schema = r#gen.subschema_for::<MaxLinesConfig>();
+        number_as_object_schema(r#gen, &mut schema, None);
+        Some(schema)
     }
 }
 

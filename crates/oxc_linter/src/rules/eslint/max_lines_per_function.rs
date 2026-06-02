@@ -14,7 +14,7 @@ use crate::{
     ast_util::{get_function_name_with_kind, iter_outer_expressions},
     context::LintContext,
     rule::{DefaultRuleConfig, Rule},
-    utils::count_comment_lines,
+    utils::{count_comment_lines, number_as_object_schema},
 };
 
 fn max_lines_per_function_diagnostic(
@@ -67,6 +67,18 @@ impl Deref for MaxLinesPerFunction {
 
     fn deref(&self) -> &Self::Target {
         &self.0
+    }
+}
+
+#[cfg(feature = "ruledocs")]
+impl MaxLinesPerFunction {
+    #[expect(clippy::unnecessary_wraps)]
+    pub fn config_schema(
+        r#gen: &mut schemars::r#gen::SchemaGenerator,
+    ) -> Option<schemars::schema::Schema> {
+        let mut schema = r#gen.subschema_for::<MaxLinesPerFunctionConfig>();
+        number_as_object_schema(r#gen, &mut schema, None);
+        Some(schema)
     }
 }
 

@@ -13,6 +13,7 @@ use crate::{
     AstNode,
     context::LintContext,
     rule::{DefaultRuleConfig, Rule},
+    utils::number_as_object_schema,
 };
 
 fn max_params_diagnostic(message: &str, span: Span) -> OxcDiagnostic {
@@ -68,6 +69,18 @@ impl std::ops::Deref for MaxParams {
 impl Default for MaxParamsConfig {
     fn default() -> Self {
         Self { max: 3, count_this: None, count_void_this: false }
+    }
+}
+
+#[cfg(feature = "ruledocs")]
+impl MaxParams {
+    #[expect(clippy::unnecessary_wraps)]
+    pub fn config_schema(
+        r#gen: &mut schemars::r#gen::SchemaGenerator,
+    ) -> Option<schemars::schema::Schema> {
+        let mut schema = r#gen.subschema_for::<MaxParamsConfig>();
+        number_as_object_schema(r#gen, &mut schema, None);
+        Some(schema)
     }
 }
 
