@@ -17,6 +17,7 @@ use crate::{
     jsx::JsxOptions,
     plugins::{PluginsOptions, StyledComponentsOptions},
     proposals::ProposalOptions,
+    react_compiler::ReactCompilerOptions,
     regexp::RegExpOptions,
     typescript::TypeScriptOptions,
 };
@@ -92,14 +93,6 @@ pub struct TransformOptions {
     /// Helper loading configuration for generated runtime helpers.
     pub helper_loader: HelperLoaderOptions,
 }
-
-/// Options for the [React Compiler](https://github.com/facebook/react/pull/36173)
-/// (the Rust port) transform — the compiler's concrete, fully-typed `PluginOptions`.
-///
-/// It has no `Default`; build one with `oxc_react_compiler::default_plugin_options`
-/// (which documents every option, its accepted values, and the defaults) and
-/// override fields via struct-update syntax.
-pub use oxc_react_compiler::PluginOptions as ReactCompilerOptions;
 
 impl TransformOptions {
     /// Explicitly enable all plugins that are ready, mainly for testing purposes.

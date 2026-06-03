@@ -77,12 +77,12 @@ pub use crate::{
     es2026::ES2026Options,
     jsx::{JsxOptions, JsxRuntime, ReactRefreshOptions},
     options::{
-        ESFeature, ESTarget, Engine, EngineTargets, EnvOptions, Module, ReactCompilerOptions,
-        TransformOptions,
+        ESFeature, ESTarget, Engine, EngineTargets, EnvOptions, Module, TransformOptions,
         babel::{BabelEnvOptions, BabelOptions},
     },
     plugins::{PluginsOptions, StyledComponentsOptions},
     proposals::ProposalOptions,
+    react_compiler::ReactCompilerOptions,
     typescript::{RewriteExtensionsMode, TypeScriptOptions},
 };
 

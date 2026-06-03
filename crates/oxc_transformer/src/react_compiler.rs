@@ -16,7 +16,13 @@ use oxc_ast::ast::Program;
 use oxc_diagnostics::OxcDiagnostic;
 use oxc_semantic::{Scoping, SemanticBuilder};
 
-use crate::options::ReactCompilerOptions;
+/// Options for the [React Compiler](https://github.com/facebook/react/pull/36173)
+/// (the Rust port) transform — the compiler's concrete, fully-typed `PluginOptions`.
+///
+/// It has no `Default`; build one with `oxc_react_compiler::default_plugin_options`
+/// (which documents every option, its accepted values, and the defaults) and
+/// override fields via struct-update syntax.
+pub use oxc_react_compiler::PluginOptions as ReactCompilerOptions;
 
 /// Run the React Compiler over `program`, returning the `Scoping` the rest of the
 /// pipeline should use — rebuilt if the program changed, otherwise the input.
