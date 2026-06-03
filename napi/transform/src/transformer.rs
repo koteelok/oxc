@@ -152,6 +152,54 @@ pub struct TransformOptions {
     /// Third-party plugins to use.
     /// @see {@link https://oxc.rs/docs/guide/usage/transformer/plugins}
     pub plugins: Option<PluginsOptions>,
+
+    /// Enable the experimental [React Compiler](https://github.com/facebook/react/pull/36173).
+    ///
+    /// When set, the compiler runs as the first transform and memoizes React
+    /// components and hooks. Omit (or leave `undefined`) to disable it.
+    pub react_compiler: Option<ReactCompilerOptions>,
+}
+
+/// Options for the experimental [React Compiler](https://github.com/facebook/react/pull/36173).
+///
+/// @see {@link TransformOptions#reactCompiler}
+#[napi(object)]
+#[derive(Default, Debug)]
+pub struct ReactCompilerOptions {
+    /// Which functions to compile.
+    ///
+    /// @default 'infer'
+    #[napi(ts_type = "'infer' | 'syntax' | 'annotation' | 'all'")]
+    pub compilation_mode: Option<String>,
+
+    /// What to do when a function cannot be compiled.
+    ///
+    /// @default 'none'
+    #[napi(ts_type = "'none' | 'critical_errors' | 'all_errors'")]
+    pub panic_threshold: Option<String>,
+
+    /// React runtime version target. `17` and `18` require the
+    /// `react-compiler-runtime` package; `19` ships the runtime in `react`.
+    ///
+    /// @default '19'
+    #[napi(ts_type = "'17' | '18' | '19'")]
+    pub target: Option<String>,
+}
+
+impl ReactCompilerOptions {
+    fn into_plugin_options(self) -> oxc_react_compiler::PluginOptions {
+        let mut options = oxc_react_compiler::default_plugin_options();
+        if let Some(compilation_mode) = self.compilation_mode {
+            options.compilation_mode = compilation_mode;
+        }
+        if let Some(panic_threshold) = self.panic_threshold {
+            options.panic_threshold = panic_threshold;
+        }
+        if let Some(target) = self.target {
+            options.target = oxc_react_compiler::CompilerTarget::Version(target);
+        }
+        options
+    }
 }
 
 impl TryFrom<TransformOptions> for oxc::transformer::TransformOptions {
@@ -164,8 +212,7 @@ impl TryFrom<TransformOptions> for oxc::transformer::TransformOptions {
             _ => EnvOptions::default(),
         };
         Ok(Self {
-            // React Compiler is not yet exposed through the JS options; off by default.
-            react_compiler: None,
+            react_compiler: options.react_compiler.map(ReactCompilerOptions::into_plugin_options),
             cwd: options.cwd.map(PathBuf::from).unwrap_or_default(),
             assumptions: options.assumptions.map(Into::into).unwrap_or_default(),
             typescript: options

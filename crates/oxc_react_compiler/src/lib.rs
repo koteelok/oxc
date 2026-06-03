@@ -13,11 +13,10 @@ use convert_scope::convert_scope_info;
 use diagnostics::compile_result_to_diagnostics;
 use prefilter::has_react_like_functions;
 use react_compiler::entrypoint::compile_result::LoggerEvent;
-use react_compiler::entrypoint::plugin_options::CompilerTarget;
 use react_compiler_hir::environment_config::EnvironmentConfig;
-// Re-exported so integrations (e.g. `oxc_transformer`) can name the option type
+// Re-exported so integrations (e.g. `oxc_transformer`) can name the option types
 // without depending on the upstream `react_compiler` crate directly.
-pub use react_compiler::entrypoint::plugin_options::PluginOptions;
+pub use react_compiler::entrypoint::plugin_options::{CompilerTarget, PluginOptions};
 
 /// A [`PluginOptions`] populated with the compiler's standard defaults.
 ///

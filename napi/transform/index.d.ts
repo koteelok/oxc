@@ -329,6 +329,33 @@ export interface PluginsOptions {
   taggedTemplateEscape?: boolean
 }
 
+/**
+ * Options for the experimental [React Compiler](https://github.com/facebook/react/pull/36173).
+ *
+ * @see {@link TransformOptions#reactCompiler}
+ */
+export interface ReactCompilerOptions {
+  /**
+   * Which functions to compile.
+   *
+   * @default 'infer'
+   */
+  compilationMode?: 'infer' | 'syntax' | 'annotation' | 'all'
+  /**
+   * What to do when a function cannot be compiled.
+   *
+   * @default 'none'
+   */
+  panicThreshold?: 'none' | 'critical_errors' | 'all_errors'
+  /**
+   * React runtime version target. `17` and `18` require the
+   * `react-compiler-runtime` package; `19` ships the runtime in `react`.
+   *
+   * @default '19'
+   */
+  target?: '17' | '18' | '19'
+}
+
 export interface ReactRefreshOptions {
   /**
    * Specify the identifier of the refresh registration variable.
@@ -511,6 +538,13 @@ export interface TransformOptions {
    * @see {@link https://oxc.rs/docs/guide/usage/transformer/plugins}
    */
   plugins?: PluginsOptions
+  /**
+   * Enable the experimental [React Compiler](https://github.com/facebook/react/pull/36173).
+   *
+   * When set, the compiler runs as the first transform and memoizes React
+   * components and hooks. Omit (or leave `undefined`) to disable it.
+   */
+  reactCompiler?: ReactCompilerOptions
 }
 
 export interface TransformResult {
