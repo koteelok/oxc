@@ -1,0 +1,54 @@
+# oxc_react_compiler
+#
+# Native oxc integration for the Rust port of React Compiler (facebook/react#36173).
+#
+# This crate owns the oxc <-> react_compiler_ast conversion layer. The React
+# Compiler *core* crates are frontend-agnostic (they depend on serde/indexmap
+# only, never on oxc), so we consume them as git dependencies and keep the
+# AST/scope conversion on our side, written against the live workspace oxc AST.
+#
+# NOTE: This crate is intentionally EXCLUDED from the main workspace (see the
+# root `Cargo.toml` `exclude` list). The git dependency on facebook/react would
+# otherwise force a clone of that repo on every workspace cargo invocation, and
+# the conversion code (copied verbatim from the PR, targeting oxc 0.121) does
+# not yet compile against oxc 0.134. Build it standalone:
+#
+#   cargo build --manifest-path crates/oxc_react_compiler/Cargo.toml
+#
+# Promote it to a full workspace member (with `{ workspace = true }` deps) once
+# the 0.121 -> 0.134 port lands and react_compiler is published to crates.io.
+
+[package]
+name = "oxc_react_compiler"
+version = "0.0.0"
+edition = "2024"
+publish = false
+license = "MIT"
+description = "oxc integration for the Rust port of React Compiler"
+repository = "https://github.com/oxc-project/oxc"
+
+[lib]
+doctest = false
+
+[dependencies]
+# Workspace oxc crates (path deps because this crate lives outside the workspace).
+oxc_allocator = { path = "../oxc_allocator" }
+oxc_ast = { path = "../oxc_ast" }
+oxc_ast_visit = { path = "../oxc_ast_visit" }
+oxc_codegen = { path = "../oxc_codegen" }
+oxc_diagnostics = { path = "../oxc_diagnostics" }
+oxc_parser = { path = "../oxc_parser" }
+oxc_semantic = { path = "../oxc_semantic" }
+oxc_span = { path = "../oxc_span" }
+oxc_syntax = { path = "../oxc_syntax" }
+
+# React Compiler core crates — frontend-agnostic (no oxc deps), from PR
+# facebook/react#36173 (branch `rust-research` on the author's fork).
+# Pin to a specific `rev` before relying on this for anything real.
+react_compiler = { git = "https://github.com/josephsavona/react", branch = "rust-research" }
+react_compiler_ast = { git = "https://github.com/josephsavona/react", branch = "rust-research" }
+react_compiler_hir = { git = "https://github.com/josephsavona/react", branch = "rust-research" }
+
+indexmap = { version = "2", features = ["serde"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value"] }
