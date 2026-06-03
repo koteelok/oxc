@@ -3,6 +3,12 @@
 Native oxc integration for the Rust port of React Compiler
 ([facebook/react#36173](https://github.com/facebook/react/pull/36173)).
 
+**Status:** Compiles standalone against workspace oxc 0.134 (React core crates
+pinned at rev `75f6a2b16b78`). The 0.121→0.134 drift turned out to be a single
+change — `oxc_span::Atom` split into `oxc_str::{Ident, Str}` — confined to the
+reverse converter; everything else compiled untouched. Next up: the `todo!()`
+guard, conformance harness, then wiring into the transform pipeline.
+
 ## Architecture decision
 
 The React Compiler core is a whole-program, multi-pass IR compiler (AST → HIR →
@@ -66,14 +72,17 @@ JSX/modern syntax would be gone and there'd be nothing to memoize.
 
 ## Work remaining (ordered)
 
-1. **[deps] Resolve + pin.** Confirm the three git deps resolve against the
-   author's fork (`josephsavona/react@rust-research`), then pin a `rev` instead
-   of `branch`. Heavy first clone — expected.
-2. **[port] 0.121 → 0.134 API drift.** The big task. Get each module compiling
-   against the workspace AST, in dependency order:
-   `prefilter` → `convert_scope` → `convert_ast` → `convert_ast_reverse` →
-   `apply_renames` → `diagnostics` → `lib`. Expect changes around AST node
-   shapes, `Scoping` API, `AstKind`, allocator/`Atom` APIs.
+1. **[deps] Resolve + pin.** ✅ Done. The three git deps resolve against
+   `josephsavona/react`, pinned at rev `75f6a2b16b78`. React core crates have no
+   oxc dependency, so they compile alongside workspace oxc 0.134 with no clash.
+2. **[port] 0.121 → 0.134 API drift.** ✅ Done. The only drift: `oxc_span::Atom`
+   was split into `oxc_str::{Ident, Str}` (identifier vs string newtypes). The
+   reverse converter's `atom()` helper now returns an arena `&'a str` — which
+   converts into both `Ident` and `Str` — so all ~53 builder call sites are
+   unchanged; three direct struct-field assignments (regexp `text`, template
+   `raw`/`cooked`) got an explicit `.into()`. `apply_renames` uses the same
+   `StringBuilder` pattern. `convert_ast`/`convert_scope`/`prefilter` compiled
+   verbatim. Re-port these spots on each upstream sync.
 3. **[guard] Handle `todo!()` paths.** `convert_ast.rs` panics on exotic TS
    (`TSImportEqualsDeclaration`, `TSExportAssignment`, namespace exports,
    `V8IntrinsicExpression`, `PrivateInExpression`). Detect in the prefilter and

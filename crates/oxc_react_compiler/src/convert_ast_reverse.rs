@@ -10,9 +10,7 @@
 //! nodes allocated in an OXC arena, suitable for code generation via `oxc_codegen`.
 
 use oxc_allocator::Allocator;
-use oxc_allocator::FromIn;
 use oxc_ast::ast as oxc;
-use oxc_span::Atom;
 use oxc_span::SPAN;
 use oxc_span::Span;
 use react_compiler_ast::common::BaseNode;
@@ -111,9 +109,12 @@ impl<'a> ReverseCtx<'a> {
         Some(stmt)
     }
 
-    /// Allocate a string in the arena and return an Atom with lifetime 'a.
-    fn atom(&self, s: &str) -> Atom<'a> {
-        Atom::from_in(s, self.allocator)
+    /// Allocate a string in the arena and return a `&str` with lifetime 'a.
+    ///
+    /// The returned `&'a str` converts into both `Ident` and `Str` (identifier
+    /// and string-literal name types), so it feeds every `AstBuilder` method.
+    fn atom(&self, s: &str) -> &'a str {
+        oxc_allocator::StringBuilder::from_str_in(s, self.allocator).into_str()
     }
 
     /// Convert a BaseNode's start/end into an OXC Span.
@@ -507,7 +508,7 @@ impl<'a> ReverseCtx<'a> {
             Expression::RegExpLiteral(lit) => {
                 let flags = self.parse_regexp_flags(&lit.flags);
                 let pattern = oxc::RegExpPattern {
-                    text: self.atom(&lit.pattern),
+                    text: self.atom(&lit.pattern).into(),
                     pattern: None,
                 };
                 let regex = oxc::RegExp { pattern, flags };
@@ -894,8 +895,8 @@ impl<'a> ReverseCtx<'a> {
         tl: &react_compiler_ast::expressions::TemplateLiteral,
     ) -> oxc::TemplateLiteral<'a> {
         let quasis = self.builder.vec_from_iter(tl.quasis.iter().map(|q| {
-            let raw = self.atom(&q.value.raw);
-            let cooked = q.value.cooked.as_ref().map(|c| self.atom(c));
+            let raw = self.atom(&q.value.raw).into();
+            let cooked = q.value.cooked.as_ref().map(|c| self.atom(c).into());
             let value = oxc::TemplateElementValue { raw, cooked };
             self.builder.template_element(SPAN, value, q.tail, false)
         }));

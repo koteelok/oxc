@@ -13,11 +13,9 @@
 
 use std::collections::HashMap;
 
-use oxc_allocator::FromIn;
 use oxc_ast::ast::*;
 use oxc_ast_visit::walk_mut;
 use oxc_ast_visit::VisitMut;
-use oxc_span::Atom;
 use react_compiler::entrypoint::compile_result::BindingRenameInfo;
 use react_compiler_ast::scope::BindingId;
 use react_compiler_ast::scope::ScopeInfo;
@@ -115,14 +113,16 @@ impl<'a> VisitMut<'a> for RenameApplyVisitor<'a, '_> {
     /// Rename identifier references (variable reads/uses).
     fn visit_identifier_reference(&mut self, ident: &mut IdentifierReference<'a>) {
         if let Some(renamed) = self.renamed_at(ident.span.start) {
-            ident.name = Atom::from_in(renamed, self.allocator).into();
+            ident.name =
+                oxc_allocator::StringBuilder::from_str_in(renamed, self.allocator).into_str().into();
         }
     }
 
     /// Rename binding identifiers (variable declarations/params).
     fn visit_binding_identifier(&mut self, ident: &mut BindingIdentifier<'a>) {
         if let Some(renamed) = self.renamed_at(ident.span.start) {
-            ident.name = Atom::from_in(renamed, self.allocator).into();
+            ident.name =
+                oxc_allocator::StringBuilder::from_str_in(renamed, self.allocator).into_str().into();
         }
     }
 
@@ -157,7 +157,8 @@ impl<'a> VisitMut<'a> for RenameApplyVisitor<'a, '_> {
                     // The key stays as the original name (already set)
                     // The value gets the renamed identifier
                     if let Expression::Identifier(ref mut ident) = prop.value {
-                        ident.name = Atom::from_in(renamed, self.allocator).into();
+                        ident.name =
+                oxc_allocator::StringBuilder::from_str_in(renamed, self.allocator).into_str().into();
                     }
                     return;
                 }
@@ -180,7 +181,8 @@ impl<'a> VisitMut<'a> for RenameApplyVisitor<'a, '_> {
                     prop.shorthand = false;
                     // Rename the binding identifier
                     if let BindingPattern::BindingIdentifier(ref mut ident) = prop.value {
-                        ident.name = Atom::from_in(renamed, self.allocator).into();
+                        ident.name =
+                oxc_allocator::StringBuilder::from_str_in(renamed, self.allocator).into_str().into();
                     }
                     return;
                 }
