@@ -82,7 +82,7 @@ pub use crate::{
     },
     plugins::{PluginsOptions, StyledComponentsOptions},
     proposals::ProposalOptions,
-    react_compiler::ReactCompilerOptions,
+    react_compiler::{ReactCompilerOptions, default_plugin_options},
     typescript::{RewriteExtensionsMode, TypeScriptOptions},
 };
 
