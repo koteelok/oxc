@@ -84,17 +84,10 @@ pub struct TransformOptions {
 /// Options for the [React Compiler](https://github.com/facebook/react/pull/36173)
 /// (the Rust port) transform.
 ///
-/// `plugin_options` is the compiler's `PluginOptions` as a camelCase JSON object,
-/// forwarded to the compiler verbatim — so the full option surface is reachable
-/// without oxc mirroring it (the option set is large and still evolving). The
-/// integration layer fills the fields the JS plugin normally pre-resolves
-/// (`shouldCompile`, `isDev`, `enableReanimated`, `filename`) when omitted, so a
-/// default value compiles every component.
-#[derive(Debug, Default, Clone)]
-pub struct ReactCompilerOptions {
-    /// React Compiler `PluginOptions` as a (camelCase) JSON value, passed through verbatim.
-    pub plugin_options: serde_json::Value,
-}
+/// This is the compiler's concrete `PluginOptions` (the full, typed option set).
+/// It has no `Default`, so build one with
+/// [`oxc_react_compiler::default_plugin_options`] and struct-update syntax.
+pub use oxc_react_compiler::PluginOptions as ReactCompilerOptions;
 
 impl TransformOptions {
     /// Explicitly enable all plugins that are ready, mainly for testing purposes.

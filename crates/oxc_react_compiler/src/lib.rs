@@ -13,9 +13,44 @@ use convert_scope::convert_scope_info;
 use diagnostics::compile_result_to_diagnostics;
 use prefilter::has_react_like_functions;
 use react_compiler::entrypoint::compile_result::LoggerEvent;
+use react_compiler::entrypoint::plugin_options::CompilerTarget;
+use react_compiler_hir::environment_config::EnvironmentConfig;
 // Re-exported so integrations (e.g. `oxc_transformer`) can name the option type
 // without depending on the upstream `react_compiler` crate directly.
 pub use react_compiler::entrypoint::plugin_options::PluginOptions;
+
+/// A [`PluginOptions`] populated with the compiler's standard defaults
+/// (React 19 target, `infer` compilation mode, no panic threshold, ...).
+///
+/// `PluginOptions` has no `Default` (the JS plugin pre-resolves several fields),
+/// so use this with struct-update syntax to set only what you need:
+///
+/// ```ignore
+/// PluginOptions { compilation_mode: "annotation".to_string(), ..default_plugin_options() }
+/// ```
+pub fn default_plugin_options() -> PluginOptions {
+    PluginOptions {
+        should_compile: true,
+        enable_reanimated: false,
+        is_dev: false,
+        filename: None,
+        compilation_mode: "infer".to_string(),
+        panic_threshold: "none".to_string(),
+        target: CompilerTarget::Version("19".to_string()),
+        gating: None,
+        dynamic_gating: None,
+        no_emit: false,
+        output_mode: None,
+        eslint_suppression_rules: None,
+        flow_suppressions: true,
+        ignore_use_no_forget: false,
+        custom_opt_out_directives: None,
+        environment: EnvironmentConfig::default(),
+        source_code: None,
+        profiling: false,
+        debug: false,
+    }
+}
 
 /// Result of compiling a program via the OXC frontend.
 pub struct TransformResult {
