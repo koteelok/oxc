@@ -15,6 +15,7 @@ use crate::{
     ast_util::get_function_name_with_kind,
     context::LintContext,
     rule::{DefaultRuleConfig, Rule},
+    utils::number_as_object_schema,
 };
 
 fn complexity_diagnostic(span: Span, name: &str, complexity: usize, max: usize) -> OxcDiagnostic {
@@ -61,6 +62,18 @@ impl Deref for Complexity {
 
     fn deref(&self) -> &Self::Target {
         &self.0
+    }
+}
+
+#[cfg(feature = "ruledocs")]
+impl Complexity {
+    #[expect(clippy::unnecessary_wraps)]
+    pub fn config_schema(
+        r#gen: &mut schemars::r#gen::SchemaGenerator,
+    ) -> Option<schemars::schema::Schema> {
+        let mut schema = r#gen.subschema_for::<ComplexityConfig>();
+        number_as_object_schema(r#gen, &mut schema, None);
+        Some(schema)
     }
 }
 
