@@ -701,7 +701,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -777,6 +777,159 @@ name = "foldhash"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb"
+
+[[package]]
+name = "forked_react_compiler"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e809e1c3abc9f75dabda6d06ace1db42130cbb9d8899f78fed56bea2997f50f7"
+dependencies = [
+ "forked_react_compiler_ast",
+ "forked_react_compiler_diagnostics",
+ "forked_react_compiler_hir",
+ "forked_react_compiler_inference",
+ "forked_react_compiler_lowering",
+ "forked_react_compiler_optimization",
+ "forked_react_compiler_reactive_scopes",
+ "forked_react_compiler_ssa",
+ "forked_react_compiler_typeinference",
+ "forked_react_compiler_validation",
+ "indexmap",
+ "regex",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "forked_react_compiler_ast"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1b4ff2ed393b2b1eba13120b32adf1d795c2369470f4b4c5b8d5a1075622d587"
+dependencies = [
+ "indexmap",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "forked_react_compiler_diagnostics"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fa2e2d153b603922fb2847c14124b99c78eca192a2c324a86762cdf4bc7d3ab9"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "forked_react_compiler_hir"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "db77f774d3407bb206a94b30a95cc81e68117e008f08b97e921bcd90bdbd2542"
+dependencies = [
+ "forked_react_compiler_diagnostics",
+ "indexmap",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "forked_react_compiler_inference"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "985498e3a64805553a185e8d7055224ef3d487a4135e2a7db11b42fe0c1bee3f"
+dependencies = [
+ "forked_react_compiler_diagnostics",
+ "forked_react_compiler_hir",
+ "forked_react_compiler_lowering",
+ "forked_react_compiler_optimization",
+ "forked_react_compiler_ssa",
+ "forked_react_compiler_utils",
+ "indexmap",
+]
+
+[[package]]
+name = "forked_react_compiler_lowering"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a13465fda901f72235b300b6ecb3e0e43f8c29378225571cc0c851c9b8d5ce24"
+dependencies = [
+ "forked_react_compiler_ast",
+ "forked_react_compiler_diagnostics",
+ "forked_react_compiler_hir",
+ "indexmap",
+ "serde_json",
+]
+
+[[package]]
+name = "forked_react_compiler_optimization"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7c3a527de0baca0a3979936d86602c3109268c4f79e2f346de455ca779694f10"
+dependencies = [
+ "forked_react_compiler_diagnostics",
+ "forked_react_compiler_hir",
+ "forked_react_compiler_lowering",
+ "forked_react_compiler_ssa",
+ "indexmap",
+]
+
+[[package]]
+name = "forked_react_compiler_reactive_scopes"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df06c6acaa39923b127cdbd2ed3f8d22d30ef867c0707bf3ce359548e038d393"
+dependencies = [
+ "forked_react_compiler_ast",
+ "forked_react_compiler_diagnostics",
+ "forked_react_compiler_hir",
+ "hmac",
+ "indexmap",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
+name = "forked_react_compiler_ssa"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "071526388b04c5609b7cca013caff0288d78baf95a9f92673b4a0c702d272e52"
+dependencies = [
+ "forked_react_compiler_diagnostics",
+ "forked_react_compiler_hir",
+ "forked_react_compiler_lowering",
+ "indexmap",
+]
+
+[[package]]
+name = "forked_react_compiler_typeinference"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "28a945c23f7c9fbfbbe7a1a1edcd15311c8ca9f972e3b1327b5f9ac8d6306349"
+dependencies = [
+ "forked_react_compiler_diagnostics",
+ "forked_react_compiler_hir",
+ "forked_react_compiler_ssa",
+]
+
+[[package]]
+name = "forked_react_compiler_utils"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5f5d46260581bb9fa07f8a12afb8b5c5f15ac40f449928414ede23c3a2e63fe9"
+dependencies = [
+ "indexmap",
+]
+
+[[package]]
+name = "forked_react_compiler_validation"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eae4164c4aeb7f8ba496f957ccf9a1de1c2129d219dda767ea3b47fe380c5059"
+dependencies = [
+ "forked_react_compiler_diagnostics",
+ "forked_react_compiler_hir",
+ "indexmap",
+]
 
 [[package]]
 name = "form_urlencoded"
@@ -1564,7 +1717,7 @@ version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -2372,6 +2525,9 @@ dependencies = [
 name = "oxc_react_compiler"
 version = "0.0.0"
 dependencies = [
+ "forked_react_compiler",
+ "forked_react_compiler_ast",
+ "forked_react_compiler_hir",
  "indexmap",
  "oxc_allocator",
  "oxc_ast",
@@ -2382,9 +2538,6 @@ dependencies = [
  "oxc_semantic",
  "oxc_span",
  "oxc_syntax",
- "react_compiler",
- "react_compiler_ast",
- "react_compiler_hir",
  "serde_json",
 ]
 
@@ -3023,147 +3176,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "react_compiler"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
- "react_compiler_ast",
- "react_compiler_diagnostics",
- "react_compiler_hir",
- "react_compiler_inference",
- "react_compiler_lowering",
- "react_compiler_optimization",
- "react_compiler_reactive_scopes",
- "react_compiler_ssa",
- "react_compiler_typeinference",
- "react_compiler_validation",
- "regex",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "react_compiler_ast"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "react_compiler_diagnostics"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "serde",
-]
-
-[[package]]
-name = "react_compiler_hir"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
- "react_compiler_diagnostics",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "react_compiler_inference"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
- "react_compiler_diagnostics",
- "react_compiler_hir",
- "react_compiler_lowering",
- "react_compiler_optimization",
- "react_compiler_ssa",
- "react_compiler_utils",
-]
-
-[[package]]
-name = "react_compiler_lowering"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
- "react_compiler_ast",
- "react_compiler_diagnostics",
- "react_compiler_hir",
- "serde_json",
-]
-
-[[package]]
-name = "react_compiler_optimization"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
- "react_compiler_diagnostics",
- "react_compiler_hir",
- "react_compiler_lowering",
- "react_compiler_ssa",
-]
-
-[[package]]
-name = "react_compiler_reactive_scopes"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "hmac",
- "indexmap",
- "react_compiler_ast",
- "react_compiler_diagnostics",
- "react_compiler_hir",
- "serde_json",
- "sha2",
-]
-
-[[package]]
-name = "react_compiler_ssa"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
- "react_compiler_diagnostics",
- "react_compiler_hir",
- "react_compiler_lowering",
-]
-
-[[package]]
-name = "react_compiler_typeinference"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "react_compiler_diagnostics",
- "react_compiler_hir",
- "react_compiler_ssa",
-]
-
-[[package]]
-name = "react_compiler_utils"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
-]
-
-[[package]]
-name = "react_compiler_validation"
-version = "0.1.0"
-source = "git+https://github.com/josephsavona/react?rev=75f6a2b16b7826b9a35a9b86fd135f19a37af05c#75f6a2b16b7826b9a35a9b86fd135f19a37af05c"
-dependencies = [
- "indexmap",
- "react_compiler_diagnostics",
- "react_compiler_hir",
-]
-
-[[package]]
 name = "redox_syscall"
 version = "0.5.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3291,7 +3303,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -3386,7 +3398,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5b55fb86dfd3a2f5f76ea78310a88f96c4ea21a3031f8d212443d56123fd0521"
 dependencies = [
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -3681,7 +3693,7 @@ dependencies = [
  "getrandom 0.4.2",
  "once_cell",
  "rustix",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -4210,7 +4222,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]

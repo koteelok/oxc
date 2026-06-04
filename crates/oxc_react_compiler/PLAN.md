@@ -56,9 +56,9 @@ cargo run   -p oxc_react_compiler --example react_compiler
 
 Two consequences of membership to keep in mind:
 
-- **React clone.** The git dependency means the first workspace cargo operation
-  fetches the `josephsavona/react` fork at the pinned `rev`. Move to a crates.io
-  release once the React Compiler core crates are published.
+- **Forked React crates.** We depend on a published MIT fork of the React Compiler
+  core crates (`forked_react_compiler*` on crates.io); a `package` rename keeps the
+  in-code name `react_compiler*`. Bump the version when syncing upstream.
 - **Relaxed lints.** The `src/` conversion modules are vendored close to
   upstream, so the crate defines its own `[lints.clippy]` (allowing the few
   rules they trip: `disallowed_types`, `collapsible_if`, `needless_return`,
@@ -85,9 +85,11 @@ JSX/modern syntax would be gone and there'd be nothing to memoize.
 
 ## Work remaining (ordered)
 
-1. **[deps] Resolve + pin.** ✅ Done. The three git deps resolve against
-   `josephsavona/react`, pinned at rev `75f6a2b16b78`. React core crates have no
-   oxc dependency, so they compile alongside workspace oxc 0.134 with no clash.
+1. **[deps] Resolve + pin.** ✅ Done. The three deps resolve against the published
+   `forked_react_compiler*` crates (MIT) on crates.io, pinned at `0.1.0` via a
+   `package` rename that keeps the in-code name `react_compiler*`. React core
+   crates have no oxc dependency, so they compile alongside workspace oxc 0.134
+   with no clash.
 2. **[port] 0.121 → 0.134 API drift.** ✅ Done. The only drift: `oxc_span::Atom`
    was split into `oxc_str::{Ident, Str}` (identifier vs string newtypes). The
    reverse converter's `atom()` helper now returns an arena `&'a str` — which
